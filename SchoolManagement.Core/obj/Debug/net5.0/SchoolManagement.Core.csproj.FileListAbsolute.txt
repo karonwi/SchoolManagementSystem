@@ -1,0 +1,12 @@
+C:\Users\hp\Documents\A Personal Learning\SchoolManagementSystem\SchoolManagement.Core\obj\Debug\net5.0\SchoolManagement.Core.csproj.AssemblyReference.cache
+C:\Users\hp\Documents\A Personal Learning\SchoolManagementSystem\SchoolManagement.Core\obj\Debug\net5.0\SchoolManagement.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\hp\Documents\A Personal Learning\SchoolManagementSystem\SchoolManagement.Core\obj\Debug\net5.0\SchoolManagement.Core.AssemblyInfoInputs.cache
+C:\Users\hp\Documents\A Personal Learning\SchoolManagementSystem\SchoolManagement.Core\obj\Debug\net5.0\SchoolManagement.Core.AssemblyInfo.cs
+C:\Users\hp\Documents\A Personal Learning\SchoolManagementSystem\SchoolManagement.Core\obj\Debug\net5.0\SchoolManagement.Core.csproj.CoreCompileInputs.cache
+C:\Users\hp\Documents\A Personal Learning\SchoolManagementSystem\SchoolManagement.Core\bin\Debug\net5.0\SchoolManagement.Core.deps.json
+C:\Users\hp\Documents\A Personal Learning\SchoolManagementSystem\SchoolManagement.Core\bin\Debug\net5.0\SchoolManagement.Core.dll
+C:\Users\hp\Documents\A Personal Learning\SchoolManagementSystem\SchoolManagement.Core\bin\Debug\net5.0\SchoolManagement.Core.pdb
+C:\Users\hp\Documents\A Personal Learning\SchoolManagementSystem\SchoolManagement.Core\obj\Debug\net5.0\SchoolManagement.Core.dll
+C:\Users\hp\Documents\A Personal Learning\SchoolManagementSystem\SchoolManagement.Core\obj\Debug\net5.0\refint\SchoolManagement.Core.dll
+C:\Users\hp\Documents\A Personal Learning\SchoolManagementSystem\SchoolManagement.Core\obj\Debug\net5.0\SchoolManagement.Core.pdb
+C:\Users\hp\Documents\A Personal Learning\SchoolManagementSystem\SchoolManagement.Core\obj\Debug\net5.0\ref\SchoolManagement.Core.dll

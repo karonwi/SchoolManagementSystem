@@ -1,0 +1,6 @@
+C:\Users\hp\Documents\A Personal Learning\SchoolManagementSystem\SchoolManagement\obj\Debug\net5.0\SchoolManagement.csproj.AssemblyReference.cache
+C:\Users\hp\Documents\A Personal Learning\SchoolManagementSystem\SchoolManagement\obj\Debug\net5.0\SchoolManagement.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\hp\Documents\A Personal Learning\SchoolManagementSystem\SchoolManagement\obj\Debug\net5.0\SchoolManagement.AssemblyInfoInputs.cache
+C:\Users\hp\Documents\A Personal Learning\SchoolManagementSystem\SchoolManagement\obj\Debug\net5.0\SchoolManagement.AssemblyInfo.cs
+C:\Users\hp\Documents\A Personal Learning\SchoolManagementSystem\SchoolManagement\obj\Debug\net5.0\SchoolManagement.csproj.CoreCompileInputs.cache
+C:\Users\hp\Documents\A Personal Learning\SchoolManagementSystem\SchoolManagement\obj\Debug\net5.0\SchoolManagement.MvcApplicationPartsAssemblyInfo.cache

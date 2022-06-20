@@ -1,0 +1,32 @@
+[
+  {
+    "UserId": "a0375c23-348f-4e46-befc-0c91fe75fe5f",
+    "Age": 16,
+    "Gender": "male",
+    "Class": "Maryann"
+  },
+  {
+    "UserId": "2762f801-d52a-412b-a335-170731777b86",
+    "Age": 26,
+    "Gender": "female",
+    "Class": "Ann"
+  },
+  {
+    "UserId": "16cc6852-860b-4d0a-9df7-ddcd18191f7d",
+    "Age": 18,
+    "Gender": "female",
+    "Class": "Delaney"
+  },
+  {
+    "UserId": "c2d07f80-3a4d-4be6-a303-7589f53d0591",
+    "Age": 23,
+    "Gender": "male",
+    "Class": "Morris"
+  },
+  {
+    "UserId": "234f9ff8-cc97-4715-b5b5-7c8e13399f82",
+    "Age": 28,
+    "Gender": "male",
+    "Class": "Finch"
+  }
+]
