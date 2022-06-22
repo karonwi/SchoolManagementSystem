@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using SchoolManagement.Core.DTOs;
 using SchoolManagement.Core.Entities;
 using SchoolManagement.Core.Interfaces;
+using SchoolManagement.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,19 +15,52 @@ namespace SchoolManagement.Infrastructure.Services
     public class AuthenticationService : IAuthenticationService
     {
         private readonly UserManager<User> _userManager;
-        public AuthenticationService(UserManager<User> userManager)
+        private readonly ITokenGenerator _tokenGen;
+        private IMapper _mapper;
+        public AuthenticationService(UserManager<User> userManager, ITokenGenerator tokenGen, IMapper map)
         {
             _userManager = userManager;
+            _tokenGen = tokenGen;
+            _mapper = map;
         }
     
-        public Task<Response<string>> EmailConfirmationAsync(ConfirmEmailRequestDTO emailRequestDTO)
+        public async Task<Response<string>> EmailConfirmationAsync(ConfirmEmailRequestDTO emailRequestDTO)
         {
-            throw new NotImplementedException();
+            var findUser = await _userManager.FindByEmailAsync(emailRequestDTO.EmailAddress);
+            if (findUser != null)
+            {
+                var decodedToken =TokenConverter.DecodeToken(emailRequestDTO.Token);
+                var result =await _userManager.ConfirmEmailAsync(findUser, decodedToken);
+                if (await _userManager.IsEmailConfirmedAsync(findUser) || result.Succeeded)
+                {
+                    return new Response<string>()
+                    {
+                        Success = true,
+                        Message = "Email confirmation was successful"
+                    };
+                    
+                }
+                throw new ArgumentException("Your email could not be confirmed");
+            }
+            throw new ArgumentException($"User with the email {emailRequestDTO.EmailAddress} could not be found");
         }
 
-        public Task<Response<string>> ForgotPasswordAsync(string email)
+        public async Task<Response<string>> ForgotPasswordAsync(string email)
         {
-            throw new NotImplementedException();
+            var findUser = await _userManager.FindByEmailAsync(email);
+            var userResponse = _mapper.Map<UserResponseDTO>(findUser);
+            var response = new Response<string>
+            {
+                Success = false,
+                Message = "A link has been sent to the specified email address"
+            };
+            if (findUser == null)
+            {
+                response.Success = false;
+                return response;
+            }
+            userResponse.FullName = $"{findUser.FirstName + " " + findUser.LastName}";
+            userResponse.Token = await _userManager.GeneratePasswordResetTokenAsync(findUser);
         }
 
         public async Task<Response<UserResponseDTO>> LoginAsync(UserRequestDTO userRequest)
@@ -44,13 +79,15 @@ namespace SchoolManagement.Infrastructure.Services
                                 Email = $"The email {userRequest.Email} has been confirmed",
                                 FullName = findUser.FirstName + " " + findUser.LastName,
                                 Id = findUser.Id,
-                                Token = 
-                            }
-                        }
+                                Token = await _tokenGen.GenerateTokenAsync(findUser)
+                            },
+                            Message = "Login successful",
+                            Success = true
+                        };
                     }
+                    throw new AccessViolationException("Kindly verify your email address to login");
                 }
                 throw new AccessViolationException("Invalid Password");
-                
             }
             throw new AccessViolationException("Invalid Credentials");
         }

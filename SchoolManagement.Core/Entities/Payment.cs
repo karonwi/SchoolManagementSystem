@@ -15,5 +15,9 @@ namespace SchoolManagement.Core.Entities
         public bool Status { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+        public string OTP { get; set; }
+        public Guid UserId { get; set; }
+        public User User { get; set; }
+        public Transaction Transaction { get; set; }
     }
 }
