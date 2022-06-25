@@ -17,11 +17,13 @@ namespace SchoolManagement.Infrastructure.Services
         private readonly UserManager<User> _userManager;
         private readonly ITokenGenerator _tokenGen;
         private IMapper _mapper;
-        public AuthenticationService(UserManager<User> userManager, ITokenGenerator tokenGen, IMapper map)
+        private readonly IConfirmationMailService _confirmMail;
+        public AuthenticationService(UserManager<User> userManager, ITokenGenerator tokenGen, IMapper map, IConfirmationMailService confirmMail)
         {
             _userManager = userManager;
             _tokenGen = tokenGen;
             _mapper = map;
+            _confirmMail = confirmMail;
         }
     
         public async Task<Response<string>> EmailConfirmationAsync(ConfirmEmailRequestDTO emailRequestDTO)
@@ -61,6 +63,9 @@ namespace SchoolManagement.Infrastructure.Services
             }
             userResponse.FullName = $"{findUser.FirstName + " " + findUser.LastName}";
             userResponse.Token = await _userManager.GeneratePasswordResetTokenAsync(findUser);
+            await _confirmMail.SendConfirmationEmailForResetPassword(userResponse);
+            response.Success = true;
+            return response;
         }
 
         public async Task<Response<UserResponseDTO>> LoginAsync(UserRequestDTO userRequest)
@@ -92,14 +97,75 @@ namespace SchoolManagement.Infrastructure.Services
             throw new AccessViolationException("Invalid Credentials");
         }
 
-        public Task<Response<string>> ResetPasswordAsync(ResetPasswordDTO resetPassword)
+        public async Task<Response<string>> ResetPasswordAsync(ResetPasswordDTO resetPassword)
         {
-            throw new NotImplementedException();
+            var user = await _userManager.FindByEmailAsync(resetPassword.Email);
+            if (user == null)
+            {
+                var response = new Response<string>
+                {
+                    Success = false,
+                    Message = $"This email {resetPassword.Email} does not exist"
+                };
+            }
+
+            var token = TokenConverter.DecodeToken(resetPassword.Token);
+           var result = await _userManager.ResetPasswordAsync(user, token, resetPassword.NewPassword);
+            if (result.Succeeded)
+            {
+                return new Response<string>
+                {
+                    Success = true,
+                    Message = "Password has been reset successfully"
+                };
+            }
+            return new Response<string>
+            {
+                Success = false,
+                Message = " Password was not reset succesfully",
+                Errors = result.GetIdentityErrors()
+            };
         }
 
-        public Task<Response<string>> UpdatePasswordAsync(UpdatePasswordDTO updatePassword)
+        public async Task<Response<string>> UpdatePasswordAsync(UpdatePasswordDTO updatePassword)
         {
-            throw new NotImplementedException();
+            var user = await _userManager.FindByEmailAsync(updatePassword.EmailAddress);
+            if (user != null)
+            {
+                var checkPassword = await _userManager.CheckPasswordAsync(user,updatePassword.OldPassword);
+                if (checkPassword)
+                {
+                    var result = await _userManager.ChangePasswordAsync(user, updatePassword.OldPassword, updatePassword.NewPassword);
+                    if (result.Succeeded)
+                    {
+                        return new Response<string>()
+                        {
+                            Message = "Password has been updated successfully",
+                            Success = true,
+                            Data = null
+                        };
+                    }
+                    else
+                    {
+                        return new Response<string>()
+                        {
+                            Message = "Password update unsuccessful",
+                            Success = false,
+                            Errors = result.GetIdentityErrors()
+                        };
+                    }
+                }
+                return new Response<string>()
+                {
+                    Success = false,
+                    Message = "Password update was unsuccessful"
+                };
+            }
+            return new Response<string>
+            {
+                Success = false,
+                Message = $"User with the email {updatePassword.EmailAddress} does not exist"
+            };
         }
     }
 }
